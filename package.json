@@ -1,0 +1,295 @@
+{
+  "name": "problemmate",
+  "displayName": "ProblemMate",
+  "description": "A diagnostics report and workflow companion for VS Code Problems.",
+  "version": "1.0.0",
+  "publisher": "problemmate",
+  "author": "ProblemMate contributors",
+  "license": "MIT",
+  "keywords": [
+    "vscode",
+    "diagnostics",
+    "problems",
+    "report",
+    "debugging"
+  ],
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:problemmateView",
+    "onView:problemmateExplorerView",
+    "onCommand:problemmate.refreshProblems",
+    "onCommand:problemmate.showActions",
+    "onCommand:problemmate.copyProblemContext",
+    "onCommand:problemmate.copyProblemContextMarkdown",
+    "onCommand:problemmate.copyAllProblemsSummary",
+    "onCommand:problemmate.copyFilteredProblemsSummary",
+    "onCommand:problemmate.copyCurrentFileSummary",
+    "onCommand:problemmate.copyProblemsWithFormat",
+    "onCommand:problemmate.exportSummaryMarkdown",
+    "onCommand:problemmate.exportSummaryJson",
+    "onCommand:problemmate.filterProblems",
+    "onCommand:problemmate.clearFilters",
+    "onCommand:problemmate.sortProblems",
+    "onCommand:problemmate.markAsFixed",
+    "onCommand:problemmate.openFixLog",
+    "onCommand:problemmate.saveSnapshot",
+    "onCommand:problemmate.compareSnapshots",
+    "onCommand:problemmate.focusProblemView"
+  ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package --allow-missing-repository"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "problemmate.refreshProblems",
+        "title": "Refresh Problems",
+        "category": "ProblemMate",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "problemmate.showActions",
+        "title": "Show Actions",
+        "category": "ProblemMate"
+      },
+      {
+        "command": "problemmate.copyProblemContext",
+        "title": "Copy Problem Context",
+        "category": "ProblemMate",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "problemmate.copyProblemContextMarkdown",
+        "title": "Copy Problem Context as Markdown",
+        "category": "ProblemMate"
+      },
+      {
+        "command": "problemmate.copyProblemsWithFormat",
+        "title": "Copy Problems with Format...",
+        "category": "ProblemMate"
+      },
+      {
+        "command": "problemmate.copyAllProblemsSummary",
+        "title": "Copy All Problems Summary",
+        "category": "ProblemMate"
+      },
+      {
+        "command": "problemmate.copyFilteredProblemsSummary",
+        "title": "Copy Filtered Problems Summary",
+        "category": "ProblemMate"
+      },
+      {
+        "command": "problemmate.copyCurrentFileSummary",
+        "title": "Copy Current File Summary",
+        "category": "ProblemMate"
+      },
+      {
+        "command": "problemmate.exportSummaryMarkdown",
+        "title": "Export Summary as Markdown",
+        "category": "ProblemMate",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "problemmate.exportSummaryJson",
+        "title": "Export Summary as JSON",
+        "category": "ProblemMate"
+      },
+      {
+        "command": "problemmate.filterProblems",
+        "title": "Filter Problems",
+        "category": "ProblemMate",
+        "icon": "$(filter)"
+      },
+      {
+        "command": "problemmate.clearFilters",
+        "title": "Clear Filters",
+        "category": "ProblemMate",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "problemmate.sortProblems",
+        "title": "Sort Problems",
+        "category": "ProblemMate",
+        "icon": "$(sort-precedence)"
+      },
+      {
+        "command": "problemmate.markAsFixed",
+        "title": "Mark as Fixed",
+        "category": "ProblemMate",
+        "icon": "$(check)"
+      },
+      {
+        "command": "problemmate.openFixLog",
+        "title": "Open Fix Log",
+        "category": "ProblemMate"
+      },
+      {
+        "command": "problemmate.saveSnapshot",
+        "title": "Save Diagnostic Snapshot",
+        "category": "ProblemMate",
+        "icon": "$(save)"
+      },
+      {
+        "command": "problemmate.compareSnapshots",
+        "title": "Compare Diagnostic Snapshots",
+        "category": "ProblemMate"
+      },
+      {
+        "command": "problemmate.focusProblemView",
+        "title": "Focus Problem View",
+        "category": "ProblemMate"
+      }
+    ],
+    "configuration": {
+      "title": "ProblemMate",
+      "properties": {
+        "problemmate.contextLines": {
+          "type": "number",
+          "default": 2,
+          "minimum": 0,
+          "maximum": 20,
+          "description": "Number of lines before and after a diagnostic to include when copying problem context."
+        },
+        "problemmate.defaultCopyFormat": {
+          "type": "string",
+          "default": "plain",
+          "enum": [
+            "plain",
+            "markdown",
+            "github",
+            "json"
+          ],
+          "description": "Default summary format used by one-step copy commands."
+        },
+        "problemmate.defaultSortMode": {
+          "type": "string",
+          "default": "severity",
+          "enum": [
+            "severity",
+            "file",
+            "line",
+            "source"
+          ],
+          "description": "Default sort order for ProblemMate diagnostics."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "problemmate",
+          "title": "ProblemMate",
+          "icon": "resources/problemmate.svg"
+        }
+      ]
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "problemmateExplorerView",
+          "name": "ProblemMate"
+        }
+      ],
+      "problemmate": [
+        {
+          "id": "problemmateView",
+          "name": "ProblemMate"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "problemmate.filterProblems",
+          "when": "view == problemmateView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "problemmate.sortProblems",
+          "when": "view == problemmateView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "problemmate.refreshProblems",
+          "when": "view == problemmateView",
+          "group": "navigation@3"
+        },
+        {
+          "command": "problemmate.filterProblems",
+          "when": "view == problemmateExplorerView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "problemmate.sortProblems",
+          "when": "view == problemmateExplorerView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "problemmate.refreshProblems",
+          "when": "view == problemmateExplorerView",
+          "group": "navigation@3"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "problemmate.copyProblemContext",
+          "when": "view == problemmateView && viewItem == problemmate.problem",
+          "group": "inline@1"
+        },
+        {
+          "command": "problemmate.markAsFixed",
+          "when": "view == problemmateView && viewItem == problemmate.problem",
+          "group": "inline@2"
+        },
+        {
+          "command": "problemmate.copyProblemContext",
+          "when": "view == problemmateExplorerView && viewItem == problemmate.problem",
+          "group": "inline@1"
+        },
+        {
+          "command": "problemmate.markAsFixed",
+          "when": "view == problemmateExplorerView && viewItem == problemmate.problem",
+          "group": "inline@2"
+        },
+        {
+          "command": "problemmate.copyProblemContextMarkdown",
+          "when": "view == problemmateView && viewItem == problemmate.problem",
+          "group": "copy@1"
+        },
+        {
+          "command": "problemmate.copyProblemContextMarkdown",
+          "when": "view == problemmateExplorerView && viewItem == problemmate.problem",
+          "group": "copy@1"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "problemmate.copyProblemContext",
+          "when": "editorTextFocus",
+          "group": "problemmate@1"
+        },
+        {
+          "command": "problemmate.markAsFixed",
+          "when": "editorTextFocus",
+          "group": "problemmate@2"
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.6.0",
+    "typescript": "^5.8.3"
+  }
+}
