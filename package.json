@@ -6,6 +6,14 @@
   "publisher": "problemmate",
   "author": "ProblemMate contributors",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/malaniyajoshua-max/ProblemMate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/malaniyajoshua-max/ProblemMate/issues"
+  },
+  "homepage": "https://github.com/malaniyajoshua-max/ProblemMate#readme",
   "keywords": [
     "vscode",
     "diagnostics",
