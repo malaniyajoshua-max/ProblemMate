@@ -1,9 +1,5 @@
 # Change Log
 
-## Unreleased
-
-- Reduced the repository to essential extension source, build configuration, and core documentation.
-
 ## 1.0.0
 
 - Upgraded ProblemMate into a diagnostics reporting workflow tool.

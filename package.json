@@ -4,7 +4,7 @@
   "description": "A diagnostics report and workflow companion for VS Code Problems.",
   "version": "1.0.0",
   "publisher": "problemmate",
-  "author": "ProblemMate contributors",
+  "author": "malaniyajoshua-max",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -55,7 +55,7 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "package": "vsce package --allow-missing-repository"
+    "package": "vsce package --no-dependencies"
   },
   "contributes": {
     "commands": [

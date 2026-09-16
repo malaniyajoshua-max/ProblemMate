@@ -1,60 +1,56 @@
 # ProblemMate
 
-ProblemMate is a VS Code diagnostics companion. It helps inspect, filter, navigate, copy, export, and document diagnostics that are already available in VS Code Problems.
+ProblemMate is a lightweight VS Code diagnostics companion for the Problems data already published by VS Code and language extensions. It helps collect, filter, navigate, copy, export, and compare diagnostics without introducing a separate analyzer or network service.
 
-It does not run code, catch terminal runtime exceptions, call AI models, or use network services.
+## Highlights
 
-## Features
-
-- Activity Bar and Explorer views.
-- Current-file and workspace diagnostic groups.
-- Click a problem to jump to its source range.
-- Filter by scope, severity, source, and text.
-- Sort by severity, file, line, or source.
-- Copy problem context with nearby code.
+- Two synchronized tree views: Activity Bar and Explorer.
+- Workspace and current-file diagnostic grouping.
+- Filter by scope, severity, source, and text; sort by severity, file, line, or source.
+- Jump from a diagnostic directly to its source range.
+- Copy a diagnostic with nearby source context.
 - Copy summaries as plain text, Markdown, GitHub issue text, or JSON.
-- Export Markdown and JSON reports.
-- Save and compare diagnostic snapshots.
-- Mark problems as fixed in `problemmate-fix-log.md`.
-- Status bar error and warning counts.
+- Export Markdown / JSON reports to `.problemmate/reports/`.
+- Save diagnostic snapshots and generate before/after diff reports.
+- Record manually resolved items in `problemmate-fix-log.md`.
+- Status-bar counts for errors and warnings.
+
+ProblemMate does **not** run code, perform static analysis, capture terminal runtime exceptions, call AI models, or use network services. It only consumes diagnostics already exposed through the VS Code Diagnostics API.
 
 ## Development
+
+Requirements:
+
+- Node.js 20+
+- VS Code 1.90+
 
 ```bash
 npm install
 npm run compile
 ```
 
-Open this folder in VS Code and press `F5` to run an Extension Development Host.
+Open the repository in VS Code and press `F5` to launch an Extension Development Host.
 
-## Build Package
+To build an installable VSIX:
 
 ```bash
 npm run package
 ```
 
-This creates a local `.vsix` package.
-
-## Commands
+## Main Commands
 
 - `ProblemMate: Show Actions`
-- `ProblemMate: Refresh Problems`
 - `ProblemMate: Filter Problems`
 - `ProblemMate: Clear Filters`
 - `ProblemMate: Sort Problems`
 - `ProblemMate: Copy Problem Context`
-- `ProblemMate: Copy Problem Context as Markdown`
 - `ProblemMate: Copy Problems with Format...`
-- `ProblemMate: Copy All Problems Summary`
-- `ProblemMate: Copy Filtered Problems Summary`
-- `ProblemMate: Copy Current File Summary`
 - `ProblemMate: Export Summary as Markdown`
 - `ProblemMate: Export Summary as JSON`
 - `ProblemMate: Mark as Fixed`
 - `ProblemMate: Open Fix Log`
 - `ProblemMate: Save Diagnostic Snapshot`
 - `ProblemMate: Compare Diagnostic Snapshots`
-- `ProblemMate: Focus Problem View`
 
 ## Settings
 
@@ -65,6 +61,8 @@ This creates a local `.vsix` package.
   "problemmate.defaultSortMode": "severity"
 }
 ```
+
+`problemmate.contextLines` is limited to 0–20 lines on each side of the target diagnostic.
 
 ## Project Structure
 
@@ -79,18 +77,28 @@ ProblemMate/
 ├─ resources/
 │  └─ problemmate.svg
 └─ src/
-   ├─ extension.ts
-   ├─ diagnosticsReader.ts
-   ├─ problemTreeProvider.ts
-   ├─ problemContext.ts
-   ├─ contextFormatter.ts
-   ├─ filters.ts
-   ├─ reports.ts
-   ├─ statusBar.ts
-   ├─ summary.ts
-   └─ types.ts
+   ├─ extension.ts            # activation, commands and workflow coordination
+   ├─ diagnosticsReader.ts    # VS Code diagnostics -> internal model
+   ├─ filters.ts              # filtering, sorting and view-state normalization
+   ├─ problemTreeProvider.ts  # TreeView data provider and tree items
+   ├─ problemContext.ts       # nearby source-context extraction and formatting
+   ├─ summary.ts              # plain/Markdown/GitHub/JSON summaries
+   ├─ reports.ts              # report export, fix log and snapshot persistence
+   ├─ statusBar.ts            # status-bar diagnostics summary
+   └─ types.ts                # shared data model and utility functions
 ```
 
-## Scope
+## Data and Privacy
 
-ProblemMate only reads diagnostics that VS Code and language extensions already publish. It is not a static analyzer, runtime error catcher, AI fixer, or Run / Debug extension.
+ProblemMate has no runtime third-party npm dependencies and does not send diagnostics, source code, or reports over the network. Generated reports and snapshots remain inside the current workspace.
+
+## Current Limitations
+
+- ProblemMate depends on diagnostics produced by VS Code or installed language/tooling extensions; it does not create diagnostics itself.
+- Report and snapshot storage currently uses the first workspace folder in a multi-root workspace.
+- `Mark as Fixed` records an entry in the fix log; it does not remove or mutate the underlying VS Code diagnostic.
+- The repository currently relies on TypeScript compilation and package-build validation rather than an automated test suite.
+
+## License
+
+MIT
